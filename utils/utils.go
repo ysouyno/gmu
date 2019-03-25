@@ -4,6 +4,7 @@ import (
 	"os"
 	"io"
 	"fmt"
+	"runtime"
 )
 
 func FileExist(file string) bool {
@@ -58,4 +59,15 @@ func Contains(arr []string, str string) bool {
 	}
 
 	return false
+}
+
+func Home() string {
+	switch runtime.GOOS {
+	case "windows":
+		return os.Getenv(`USERPROFILE`)
+	case "linux":
+		return os.Getenv(`HOME`)
+	default:
+		return ""
+	}
 }
