@@ -31,7 +31,7 @@ var flag_chk string
 var home string
 
 func get_git_config_info() bool {
-	gitconfig := home + "\\" + GITCONFIG
+	gitconfig := home + "/" + GITCONFIG
 
 	cfg, err := ini.Load(gitconfig)
 	if err != nil {
@@ -47,7 +47,7 @@ func get_git_config_info() bool {
 }
 
 func get_current_git_user() string {
-	gitconfig := home + "\\" + GITCONFIG
+	gitconfig := home + "/" + GITCONFIG
 
 	cfg, err := ini.Load(gitconfig)
 	if err != nil {
@@ -59,7 +59,7 @@ func get_current_git_user() string {
 }
 
 func update_gmuconfig() bool {
-	gmuconfig := home + "\\" + GMUCONFIG;
+	gmuconfig := home + "/" + GMUCONFIG;
 	if !utils.FileExist(gmuconfig) {
 		file, err := os.Create(gmuconfig)
 		if err != nil {
@@ -82,11 +82,11 @@ func update_gmuconfig() bool {
 	}
 
 	if !curr_sec.HasKey(KEY_NAME_GIT) {
-		curr_sec.NewKey(KEY_NAME_GIT, home + "\\" + GITCONFIG)
+		curr_sec.NewKey(KEY_NAME_GIT, home + "/" + GITCONFIG)
 	}
 
 	if !curr_sec.HasKey(KEY_NAME_SSH) {
-		curr_sec.NewKey(KEY_NAME_SSH, home + "\\" + SSHCONFIG)
+		curr_sec.NewKey(KEY_NAME_SSH, home + "/" + SSHCONFIG)
 	}
 
 	// update current git user
@@ -109,12 +109,12 @@ func update_gmuconfig() bool {
 	// handle [%git user%]
 	new_user_sec := cfg.Section(user)
 
-	gitconfig := home + "\\" + GITCONFIG + "." + user
+	gitconfig := home + "/" + GITCONFIG + "." + user
 	if utils.FileExist(gitconfig) {
 		new_user_sec.NewKey(KEY_NAME_GIT, gitconfig)
 	}
 
-	sshconfig := home + "\\" + SSHCONFIG + "." + user
+	sshconfig := home + "/" + SSHCONFIG + "." + user
 	if utils.FileExist(sshconfig) {
 		new_user_sec.NewKey(KEY_NAME_SSH, sshconfig)
 	}
@@ -125,7 +125,7 @@ func update_gmuconfig() bool {
 
 func save_git_config(user string) bool {
 	current_git_user := get_current_git_user()
-	old_config_file := home + "\\" + GITCONFIG
+	old_config_file := home + "/" + GITCONFIG
 	new_config_file := old_config_file + "." + user
 
 	// if current user is equal to 'user' and .gitconfig.user exists,
@@ -145,7 +145,7 @@ func save_git_config(user string) bool {
 
 func save_ssh_config(user string) bool {
 	current_git_user := get_current_git_user()
-	old_config_file := home + "\\" + SSHCONFIG
+	old_config_file := home + "/" + SSHCONFIG
 	new_config_file := old_config_file + "." + user
 
 	// if current user is equal to 'user' and .ssh.user exists,
@@ -167,8 +167,8 @@ func save_ssh_config(user string) bool {
 	}
 
 	for _, f := range files {
-		f_old := old_config_file + "\\" + f.Name()
-		f_new := new_config_file + "\\" + f.Name()
+		f_old := old_config_file + "/" + f.Name()
+		f_new := new_config_file + "/" + f.Name()
 		utils.CopyFile(f_new, f_old)
 	}
 
@@ -176,7 +176,7 @@ func save_ssh_config(user string) bool {
 }
 
 func init_env() bool {
-	gitconfig := home + "\\" + GITCONFIG
+	gitconfig := home + "/" + GITCONFIG
 
 	cfg, err := ini.Load(gitconfig)
 	if err != nil {
@@ -203,7 +203,7 @@ func update_env() bool {
 }
 
 func list_user() bool {
-	gmuconfig := home + "\\" + GMUCONFIG;
+	gmuconfig := home + "/" + GMUCONFIG;
 	if !utils.FileExist(gmuconfig) {
 		log.Printf("No %s found.\n", GMUCONFIG)
 		return false
@@ -231,7 +231,7 @@ func list_user() bool {
 }
 
 func checkout_user(user string) bool {
-	gmuconfig := home + "\\" + GMUCONFIG;
+	gmuconfig := home + "/" + GMUCONFIG;
 	if !utils.FileExist(gmuconfig) {
 		log.Printf("No %s found.\n", GMUCONFIG)
 		return false
@@ -282,8 +282,8 @@ func checkout_user(user string) bool {
 	}
 
 	for _, f := range files {
-		f_old := user_sshconfig + "\\" + f.Name()
-		f_new := curr_sshconfig + "\\" + f.Name()
+		f_old := user_sshconfig + "/" + f.Name()
+		f_new := curr_sshconfig + "/" + f.Name()
 
 		ret, _ = utils.CopyFile(f_new, f_old)
 		if ret == 0 {
@@ -307,12 +307,12 @@ func init() {
 		log.Fatalln("No HOME found.")
 	}
 
-	gitconfig := home + "\\" + GITCONFIG
+	gitconfig := home + "/" + GITCONFIG
 	if !utils.FileExist(gitconfig) {
 		log.Fatalf("No %s found.\n", GITCONFIG)
 	}
 
-	sshconfig := home + "\\" + SSHCONFIG
+	sshconfig := home + "/" + SSHCONFIG
 	if !utils.FileExist(sshconfig) {
 		log.Fatalf("No %s found.\n", SSHCONFIG)
 	}
