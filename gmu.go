@@ -11,7 +11,7 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-const VERSION = "0.0.1"
+const VERSION = "0.0.2"
 const GMUCONFIG = ".gmuconfig"
 const GITCONFIG = ".gitconfig"
 const SSHCONFIG = ".ssh"
@@ -304,17 +304,17 @@ func init() {
 
 	home = utils.Home()
 	if home == "" {
-		log.Fatal("No HOME found.")
+		log.Fatalln("No HOME found.")
 	}
 
 	gitconfig := home + "\\" + GITCONFIG
 	if !utils.FileExist(gitconfig) {
-		log.Fatal("No %s found.\n", GITCONFIG)
+		log.Fatalf("No %s found.\n", GITCONFIG)
 	}
 
 	sshconfig := home + "\\" + SSHCONFIG
 	if !utils.FileExist(sshconfig) {
-		log.Fatal("No %s found.\n", SSHCONFIG)
+		log.Fatalf("No %s found.\n", SSHCONFIG)
 	}
 
 	flag_ver = flag.Bool("v", false, "Print the version number.")
